@@ -32,22 +32,15 @@ export const userController = {
   create: async (c: Context) => {
     try {
       const userData = await c.req.json();
-      
-      // Hash the password before storing
       const hashedUserData = {
         ...userData,
         password: hashPassword(userData.password)
       };
-      
       const newUser = await userService.create(hashedUserData);
-      
-      // Don't return the password in the response
       const { password, ...userWithoutPassword } = newUser;
-      
       return c.json({ user: userWithoutPassword }, 201);
     } catch (error) {
       console.error('Error creating user:', error);
-
       if (error instanceof Error && error.message.includes('duplicate')) {
         return c.json({ error: 'Email already exists' }, 409);
       }
@@ -59,21 +52,14 @@ export const userController = {
     const id = Number(c.req.param('id'));
     try {
       const userData = await c.req.json();
-      
-      // If password is being updated, hash it
       if (userData.password) {
         userData.password = hashPassword(userData.password);
       }
-      
       const updatedUser = await userService.update(id, userData);
-      
       if (!updatedUser) {
         return c.json({ error: 'User not found' }, 404);
       }
-      
-      // Don't return the password in the response
       const { password, ...userWithoutPassword } = updatedUser;
-      
       return c.json({ user: userWithoutPassword });
     } catch (error) {
       console.error(`Error updating user ${id}:`, error);

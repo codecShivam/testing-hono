@@ -13,7 +13,6 @@ export const errorHandler = async ( c: Context , next: Next  ) => {
         status: error.status,
       }, error.status);
     }
-
     if (error instanceof ValidationError || error instanceof NotFoundError || error instanceof AuthenticationError || error instanceof AuthorizationError || error instanceof BadRequestError || error instanceof InternalServerError) {
       return c.json({
         success: false,
@@ -21,11 +20,9 @@ export const errorHandler = async ( c: Context , next: Next  ) => {
         status: error.status,
       }, error.status as ContentfulStatusCode);
     }
-
     return c.json({
       success: false,
       error: 'Internal Server Error',
-      
     }, 500);
     
   }
@@ -33,7 +30,6 @@ export const errorHandler = async ( c: Context , next: Next  ) => {
 
 export class ValidationError extends Error {
   status: number;
-
   constructor(message: string) {
     super(message);
     this.name = 'ValidationError';
@@ -43,7 +39,6 @@ export class ValidationError extends Error {
 
 export class NotFoundError extends Error {
   status: number;
-
   constructor(message: string) {
     super(message);
     this.name = 'NotFoundError';
@@ -53,7 +48,6 @@ export class NotFoundError extends Error {
 
 export class AuthenticationError extends Error {
   status: number;
-
   constructor(message: string) {
     super(message);
     this.name = 'AuthenticationError';
@@ -63,7 +57,6 @@ export class AuthenticationError extends Error {
 
 export class AuthorizationError extends Error {
   status: number;
-
   constructor(message: string) {
     super(message);
     this.name = 'AuthorizationError';
@@ -73,7 +66,6 @@ export class AuthorizationError extends Error {
 
 export class BadRequestError extends Error {
   status: number;
-
   constructor(message: string) {
     super(message);
     this.name = 'BadRequestError';
@@ -83,7 +75,6 @@ export class BadRequestError extends Error {
 
 export class InternalServerError extends Error {
   status: number;
-
   constructor(message: string) {
     super(message);
     this.name = `InternalServerError`;

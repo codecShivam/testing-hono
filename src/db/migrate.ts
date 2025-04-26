@@ -4,7 +4,8 @@ import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { config } from '../configs/config';
 
 async function runMigrations(): Promise<void> {
-  console.log('🔄 Running database migrations...');
+  Bun.stdout.write('🔄 Running database migrations...\n');
+  Bun.stdout.write(`Database URL: ${config.databaseUrl}\n`);
 
   const pool = new Pool({
     connectionString: config.databaseUrl,
@@ -13,10 +14,11 @@ async function runMigrations(): Promise<void> {
   const db = drizzle(pool);
 
   try {
+    Bun.stdout.write('Starting migration with folder: ./drizzle\n');
     await migrate(db, { migrationsFolder: './drizzle' });
-    console.log('✅ Migrations completed successfully!');
+    Bun.stdout.write('✅ Migrations completed successfully!\n');
   } catch (error) {
-    console.error('❌ Migration failed:', error);
+    Bun.stderr.write(`❌ Migration failed: ${error}\n`);
     process.exit(1);
   } finally {
     await pool.end();

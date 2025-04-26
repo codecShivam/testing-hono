@@ -15,8 +15,8 @@ export const users = pgTable('users', {
 
 export const posts = pgTable('posts', {
   id: serial('id').primaryKey(),
-  title:varchar('title', {length: 255}).notNull(),
-  content: varchar('content', {length: 255}).notNull(),
+  title: varchar('title', { length: 255 }).notNull(),
+  content: varchar('content', { length: 255 }).notNull(),
   authorId: serial('author_id').references(() => users.id),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),

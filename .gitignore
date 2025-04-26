@@ -62,3 +62,11 @@ bun.lockb
 
 # Drizzle
 drizzle/migrations-snapshot.json
+
+node_modules
+.git
+.gitignore
+.env
+.env.*
+*.log
+drizzle/.gitkeep

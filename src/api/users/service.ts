@@ -17,15 +17,6 @@ export const userService = {
     return results[0];
   },
 
-  // findByEmail: async (email: string): Promise<User | undefined> => {
-  //   const results = await db
-  //     .select()
-  //     .from(schema.users)
-  //     .where(eq(schema.users.email, email))
-  //     .limit(1);
-  //   return results[0];
-  // },
-
   findByEmail: async (email: string): Promise<User | undefined> => {
     const results = await db
     .select()
