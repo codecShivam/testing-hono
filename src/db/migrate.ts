@@ -25,7 +25,7 @@ async function runMigrations(): Promise<void> {
   }
 }
 
-if (import.meta.url === Bun.main) {
+if (import.meta.path === Bun.main.toString()) {
   await runMigrations();
 }
 

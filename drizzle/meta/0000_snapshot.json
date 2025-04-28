@@ -1,5 +1,5 @@
 {
-  "id": "2de98ba9-6494-4ecc-b607-d038771aca06",
+  "id": "01c41d43-0ea9-403b-a8ee-ce5670fad129",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -22,9 +22,9 @@
         },
         "content": {
           "name": "content",
-          "type": "text",
+          "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "author_id": {
           "name": "author_id",

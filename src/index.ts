@@ -32,7 +32,7 @@ async function startServer() {
 }
 
 // If this file is executed directly, start the server
-if (import.meta.url === Bun.main) {
+if (import.meta.path === Bun.main.toString()) {
   startServer();
 }
 

@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres-db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  migrations:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend-migrations
+    command: bun run db:migrate
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=${DATABASE_URL:-postgres://postgres:postgres@postgres:5432/postgres-db}
+    profiles:
+      - migrations
+    restart: on-failure
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=${DATABASE_URL:-postgres://postgres:postgres@postgres:5432/postgres-db}
+      - NODE_ENV=${NODE_ENV:-development}
+      - HOST=${HOST:-0.0.0.0}
+      - PORT=${PORT:-3000}
+      - API_VERSION=${API_VERSION:-v1}
+      - LOGGING_ENABLED=${LOGGING_ENABLED:-true}
+      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-securepassword}
+    ports:
+      - "${PORT:-3000}:${PORT:-3000}"
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+volumes:
+  postgres_data: 
