@@ -21,13 +21,19 @@ services:
     environment:
       - DATABASE_URL=postgres://postgres:yamisukehiro@host.docker.internal:5432/postgres?sslmode=disable
       - NODE_ENV=${NODE_ENV:-production}
-      - HOST=${HOST:-0.0.0.0}
-      - PORT=${PORT:-3000}
+      - HOST=0.0.0.0
+      - PORT=3001
       - API_VERSION=${API_VERSION:-v1}
       - LOGGING_ENABLED=${LOGGING_ENABLED:-true}
     ports:
-      - "${PORT:-3000}:${PORT:-3000}"
+      - "3001:3001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     volumes:
       - .:/app
       - /app/node_modules
-    restart: always 
+    restart: unless-stopped 

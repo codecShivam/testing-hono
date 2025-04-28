@@ -16,9 +16,9 @@ const configSchema = z.object({
 export type Config = z.infer<typeof configSchema>;
 
 export const config = configSchema.parse({
-  host: process.env.HOST,
-  port: process.env.PORT,
-  nodeEnv: process.env.NODE_ENV,
+  host: process.env.HOST || '0.0.0.0',
+  port: parseInt(process.env.PORT || '3000', 10),
+  nodeEnv: process.env.NODE_ENV || 'production',
   databaseUrl: process.env.DATABASE_URL,
   apiVersion: process.env.API_VERSION,
   jwtSecret: process.env.JWT_SECRET,
